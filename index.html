@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My First Webpage</title>
+  <title>My First Webpage - Wolves</title>
   
   <style>
     /* 1. Page Background & Font Style */
@@ -13,6 +13,7 @@
       margin: 40px auto;
       max-width: 650px;
       line-height: 1.6;
+      padding: 0 20px; /* Added side padding so text doesn't touch screen edges on phones */
     }
 
     /* 2. Heading Style */
@@ -20,6 +21,7 @@
       color: #2c3e50;
       border-bottom: 2px solid #3498db;
       padding-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     /* 3. Paragraph Style */
@@ -28,6 +30,32 @@
       background-color: #ffffff;
       padding: 15px;
       border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Added subtle shadow to look like a card */
+    }
+
+    /* 4. Image Styling */
+    .responsive-img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block; /* Removes weird bottom spacing under inline images */
+      margin: 20px 0; /* Adds spacing above and below the image */
+    }
+
+    /* 5. Button Link Styling */
+    .website-link {
+      display: inline-block;
+      background-color: #3498db;
+      color: #ffffff;
+      padding: 10px 18px;
+      text-decoration: none; /* Removes the default underline */
+      border-radius: 6px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .website-link:hover {
+      background-color: #2980b9; /* Slightly darker blue when hovered */
     }
   </style>
 </head>
@@ -37,9 +65,9 @@
 
   <p>In this section, we are learning the basics of wolves, including their behavior, pack dynamics, and hunting strategies.</p>
 
-  <img src="Wolf.png" alt="A wolf standing in a snowy forest" style="max-width: 100%; height: auto; border-radius: 8px;">
+  <img src="Wolf.png" alt="A wolf standing in a snowy forest" class="responsive-img">
 
-  <a href="https://en.wikipedia.org/wiki/Wolf" target="_blank" rel="noopener noreferrer">Visit Example Website</a>
-  
+  <a href="https://en.wikipedia.org/wiki/Wolf" target="_blank" rel="noopener noreferrer" class="website-link">Learn More on Wikipedia</a>
+
 </body>
 </html>
