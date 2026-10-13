@@ -53,3 +53,26 @@ p {
 .website-link:hover {
   background-color: #1b5e20; /* Darker pine green when hovered */
 }
+
+.hidden-content {
+  display: none;
+}
+
+/* Style for the revealed behaviors list card */
+#behaviors-list {
+  background-color: #ffffff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  border-left: 5px solid #4caf50;
+  margin-top: 15px;
+  box-shadow: 0 2px 6px rgba(46, 77, 50, 0.08);
+}
+
+#behaviors-list ul {
+  padding-left: 20px;
+  margin: 10px 0 0 0;
+}
+
+#behaviors-list li {
+  margin-bottom: 8px;
+}
