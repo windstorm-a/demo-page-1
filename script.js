@@ -12,9 +12,6 @@ const wolfFacts = [
 let currentFactIndex = 0;
 
 function showWolfFact() {
-  // Show the current fact in an alert
   alert(wolfFacts[currentFactIndex]);
-
-  // Move to the next fact in the list
   currentFactIndex = (currentFactIndex + 1) % wolfFacts.length;
 }
