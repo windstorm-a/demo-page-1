@@ -15,3 +15,19 @@ function showWolfFact() {
   alert(wolfFacts[currentFactIndex]);
   currentFactIndex = (currentFactIndex + 1) % wolfFacts.length;
 }
+
+function toggleBehaviors() {
+  const content = document.getElementById("behaviors-list");
+  const button = document.getElementById("toggle-btn");
+
+  // Check if the container currently has the hidden-content class
+  if (content.classList.contains("hidden-content")) {
+    // Show the list and update button text
+    content.classList.remove("hidden-content");
+    button.textContent = "🐾 Hide Wolf Behaviors List";
+  } else {
+    // Hide the list and update button text
+    content.classList.add("hidden-content");
+    button.textContent = "🐾 Show Wolf Behaviors List";
+  }
+}
