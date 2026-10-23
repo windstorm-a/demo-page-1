@@ -1,33 +1,42 @@
+/* 1. Base Layout & Typography */
 body {
-  background-color: #e8f5e9; /* Light, soft environmental green */
+  background-color: #e8f5e9; /* Soft environmental green */
   font-family: Arial, sans-serif;
-  color: #2e4d32; /* Deep forest green text for high contrast */
+  color: #2e4d32; /* Deep forest green text */
   margin: 40px auto;
-  max-width: 650px;
+  max-width: 680px;
   line-height: 1.6;
   padding: 0 20px;
 }
 
-/* 2. Heading with Nature-Inspired Colors */
+/* 2. Headings */
 h1 {
   color: #1b4d2e; /* Dark evergreen heading color */
   border-bottom: 2px solid #81c784; /* Soft leaf-green underline */
   padding-bottom: 10px;
   margin-bottom: 20px;
+  font-size: 2rem;
 }
 
-/* 3. Paragraph Card with Decorative Vine Border */
+h2 {
+  color: #2e7d32;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 1.35rem;
+}
+
+/* 3. Paragraph Cards */
 p {
-  font-size: 18px;
+  font-size: 17px;
   background-color: #ffffff;
   padding: 18px;
   border-radius: 8px;
-  /* Green vine/leaf motif frame using border styling */
   border-left: 5px solid #4caf50;
   box-shadow: 0 2px 6px rgba(46, 77, 50, 0.08);
+  margin-bottom: 15px;
 }
 
-/* 4. Responsive Image Styling */
+/* 4. Responsive Images */
 .responsive-img {
   max-width: 100%;
   height: auto;
@@ -37,28 +46,48 @@ p {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 5. Nature-Themed Button Link */
+/* 5. Buttons & Links */
 .website-link {
   display: inline-block;
-  background-color: #2e7d32; /* Rich forest green background */
+  background-color: #2e7d32;
   color: #ffffff;
-  padding: 12px 20px;
+  padding: 12px 18px;
   text-decoration: none;
   border-radius: 6px;
   font-weight: bold;
+  font-size: 15px;
+  border: none;
+  cursor: pointer;
   margin-top: 10px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .website-link:hover {
-  background-color: #1b5e20; /* Darker pine green when hovered */
+  background-color: #1b5e20;
 }
 
+.website-link:active {
+  transform: scale(0.98);
+}
+
+/* Resource Link Container Grid */
+.resource-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.resource-links .website-link {
+  margin-top: 0;
+  text-align: center;
+}
+
+/* 6. Hidden / Revealed Behavior List Styling */
 .hidden-content {
   display: none;
 }
 
-/* Style for the revealed behaviors list card */
 #behaviors-list {
   background-color: #ffffff;
   padding: 15px 20px;
