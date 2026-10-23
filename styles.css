@@ -1,8 +1,15 @@
 /* 1. Base Layout & Typography */
 body {
-  background-color: #e8f5e9; /* Soft environmental green */
+  background-color: #e8f5e9;
+  background-image: repeating-linear-gradient(
+    45deg,
+    #c8e6c9 0px,
+    #c8e6c9 2px,
+    #e8f5e9 2px,
+    #e8f5e9 20px
+  );
   font-family: Arial, sans-serif;
-  color: #2e4d32; /* Deep forest green text */
+  color: #2e4d32;
   margin: 40px auto;
   max-width: 680px;
   line-height: 1.6;
