@@ -64,23 +64,13 @@ function calculatePackRole() {
       roleDescription = "You bring essential strength and cooperation to the community.";
   }
 
+  // Create the elements directly without relying on extra functions
   resultDiv.innerHTML = `
-    <h3>🐾 Welcome to the Pack, ${escapeHTML(nameInput)}!</h3>
+    <h3>🐾 Welcome to the Pack, <span id="user-display-name"></span>!</h3>
     <p><strong>Your Pack Designation:</strong> ${roleTitle}</p>
     <p>${roleDescription}</p>
   `;
 
+  document.getElementById("user-display-name").textContent = nameInput;
   resultDiv.classList.remove("hidden-content");
-}
-
-function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
-    tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag)
-  );
 }
