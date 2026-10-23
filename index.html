@@ -2,47 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>My First Webpage - Wolves</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Understanding Canis lupus - The World of Wolves</title> 
   <link rel="stylesheet" href="styles.css">
-  
 </head>
 <body>
 
-  <h1>Let's Learn about Wolves!</h1> <!-- This is the main heading -->
+  <h1>Understanding Canis lupus: The World of Wolves</h1>
 
-  <p>In this section, we are learning the basics of wolf behavior.</p> <!-- This is the first paragraph -->
+  <h2>Social Architecture & Ecosystem Impact</h2>
+  <p>
+    Wolves (<em>Canis lupus</em>) are apex predators whose intricate social structures and ecological influence shape entire wilderness systems. Far beyond simple pack instincts, wolf social dynamics rely on sophisticated emotional bonds, continuous vocal and visual communication, and established hierarchies. As keystone species, their presence regulates prey populations, prevents overgrazing of sensitive riverbanks, and creates vital ecological cascades that benefit hundreds of other plant and animal species.
+  </p>
 
-  <img src="Wolf.png" alt="A wolf standing in a snowy forest" class="responsive-img"> <!-- This places an image of a wolf -->
+  <img src="Wolf.png" alt="A gray wolf standing in a snowy forest" class="responsive-img">
 
-  <p>Wolves are pack animals, and are very social creatures. They communicate with various sounds, gestures, and expressions.</p> <!-- This is the second paragraph -->
+  <h2>Intra-Pack Dynamics & Communication</h2>
+  <p>
+    Communication within a pack is nuanced and subtle, preventing unnecessary conflict among members. Through posturing, facial expressions, and vocalizations, wolves maintain order and convey intentions across long distances. Pups are raised collectively by the entire group, fostering strong cooperative habits that define pack survival.
+  </p>
 
-  <button onclick="toggleBehaviors()" class="website-link" id="toggle-btn">
-  🐾 Show Wolf Behaviors List
+  <button type="button" onclick="toggleBehaviors()" class="website-link" id="toggle-btn" aria-expanded="false">
+    🐾 Show Wolf Behaviors List
   </button>
 
   <div id="behaviors-list" class="hidden-content">
-  <p><strong>Wolf Behaviors & Pack Dynamics:</strong></p>
-  <ul>
-    <li><strong>Howling:</strong> Used to assemble the pack, locate missing members, and warn rival packs away.</li>
-    <li><strong>Tail Position:</strong> High tail signals dominance and strength; a lowered tail signals submission.</li>
-    <li><strong>Play Bowing:</strong> Lowering front legs while keeping the hind end up signals a desire to play.</li>
-    <li><strong>Scent Marking:</strong> Marking territory boundaries to inform neighboring packs of their presence.</li>
-    <li><strong>Hunting Strategies:</strong> Cooperative endurance hunting to tire out large prey over long distances.</li>
-  </ul>
+    <p><strong>Wolf Behaviors & Pack Dynamics:</strong></p>
+    <ul>
+      <li><strong>Howling:</strong> Used to assemble the pack, locate missing members, synchronize pack movement, and warn rival packs away from active territory boundaries.</li>
+      <li><strong>Tail & Ear Posture:</strong> High tail carriage and forward ears signal dominance and confidence; a tucked tail and flattened ears express submission or playfulness.</li>
+      <li><strong>Play Bowing:</strong> Lowering front legs while keeping the hind end elevated invites pack mates into low-stakes physical play, reinforcing social bonds.</li>
+      <li><strong>Scent Marking:</strong> Urination and paw-scraping along territory perimeters inform neighboring packs of boundary ownership and reproductive status.</li>
+      <li><strong>Cooperative Hunting:</strong> Endurance-focused tracking strategies allow packs to tire out large prey over extensive distances through coordinated relay tactics.</li>
+    </ul>
   </div>
   
-  <h2>Hunting Tactics</h2>
+  <h2>Tactical Hunting Strategies</h2>
+  <p>
+    Using endurance, strategy, and sheer numbers, wolves can successfully hunt prey species weighing up to ten times their individual body weight, such as moose, bison, and elk. Rather than relying on brute force, wolf packs leverage terrain, wind direction, and endurance running to isolate vulnerable individuals from a herd, minimizing injury risks to pack members.
+  </p>
 
-  <p>Using their numbers, wolves can take down animals that are much larger then themselves.</p>
+  <h2>Territory and Migration</h2>
+  <p>
+    A single wolf pack's home range can span anywhere from 50 to over 1,000 square miles depending on prey density and geography. They continuously patrol these expansive territories, marking boundaries and avoiding direct clashes with neighboring packs whenever possible to conserve energy and avoid injury.
+  </p>
 
-  <img src="Wolf pack.png" alt="A group of wolves hunting a bison" class="responsive-img">
+  <img src="Wolf pack.png" alt="A group of wolves hunting a bison in snow" class="responsive-img">
 
-  <button onclick="showWolfFact()" class="website-link">
+  <button type="button" onclick="showWolfFact()" class="website-link">
     🐾 Click for a Wolf Fact!
   </button>
 
-  <a href="https://en.wikipedia.org/wiki/Wolf" target="_blank" rel="noopener noreferrer" class="website-link">Learn More on Wikipedia</a> <!-- This places a link to wikipedia -->
-  
+  <h2>Further Research & Field Studies</h2>
+  <p>
+    Explore these reputable wildlife and scientific resources to dive deeper into wolf conservation, ecology, and ongoing reintroduction programs across North America and worldwide.
+  </p>
+
+  <div class="resource-links">
+    <a href="https://en.wikipedia.org/wiki/Wolf" target="_blank" rel="noopener noreferrer" class="website-link">
+      📖 Wikipedia: Gray Wolf
+    </a>
+    <a href="https://www.nationalgeographic.com/animals/mammals/facts/gray-wolf" target="_blank" rel="noopener noreferrer" class="website-link">
+      🌿 National Geographic: Gray Wolf Profile
+    </a>
+    <a href="https://www.fws.gov/species/gray-wolf-canis-lupus" target="_blank" rel="noopener noreferrer" class="website-link">
+      🐾 U.S. Fish & Wildlife Service: Gray Wolf Overview
+    </a>
+  </div>
+
   <script src="script.js" defer></script>
 </body>
 </html>
