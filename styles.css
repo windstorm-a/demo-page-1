@@ -92,7 +92,7 @@ p {
 
 /* 6. Hidden / Revealed Behavior List Styling */
 .hidden-content {
-  display: none;
+  display: none; !important;
 }
 
 #behaviors-list {
