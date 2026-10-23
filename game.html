@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wolf Pack Hunt Game - Canis lupus Education</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    body {
+      background-color: #e8f5e9;
+      background-image: repeating-linear-gradient(
+        45deg,
+        #c8e6c9 0px,
+        #c8e6c9 2px,
+        #e8f5e9 2px,
+        #e8f5e9 20px
+      );
+      font-family: Arial, sans-serif;
+      color: #2e4d32;
+    }
+    .forest-card {
+      background-color: #ffffff;
+      border-left: 5px solid #2e7d32;
+      box-shadow: 0 4px 12px rgba(46, 77, 50, 0.12);
+    }
+    .btn-green {
+      background-color: #2e7d32;
+      color: #ffffff;
+      transition: all 0.2s ease;
+    }
+    .btn-green:hover {
+      background-color: #1b5e20;
+    }
+    .btn-green:active {
+      transform: scale(0.97);
+    }
+    canvas {
+      touch-action: none;
+    }
+  </style>
+</head>
+<body class="min-h-screen py-8 px-4 flex flex-col items-center">
+
+  <div class="w-full max-w-3xl">
+    <!-- Header -->
+    <header class="mb-6 text-center">
+      <h1 class="text-3xl md:text-4xl font-bold text-[#1b4d2e] border-b-2 border-[#81c784] pb-2 mb-2">
+        🐺 Wolf Pack Hunt Mini-Game
+      </h1>
+      <p class="text-base md:text-lg text-[#2e4d32] bg-white p-4 rounded-lg forest-card text-left">
+        Take control of a lone wolf in the wilderness! Hunt prey to maintain your stamina, earn points, and build your pack's legacy. Use WASD / Arrow Keys or tap the screen controls to navigate.
+      </p>
+    </header>
+
+    <!-- Game Card Container -->
+    <div class="forest-card rounded-lg p-4 md:p-6 mb-6">
+      <!-- Top HUD Stats Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4 text-center">
+        <div class="bg-[#f1f8e9] p-2 rounded-lg border border-[#a5d6a7]">
+          <span class="block text-xs uppercase font-bold text-[#1b4d2e]">Score</span>
+          <span id="score-display" class="text-xl font-extrabold text-[#2e7d32]">0</span>
+        </div>
+        <div class="bg-[#f1f8e9] p-2 rounded-lg border border-[#a5d6a7]">
+          <span class="block text-xs uppercase font-bold text-[#1b4d2e]">High Score</span>
+          <span id="high-score-display" class="text-xl font-extrabold text-[#1b5e20]">0</span>
+        </div>
+        <div class="bg-[#f1f8e9] p-2 rounded-lg border border-[#a5d6a7]">
+          <span class="block text-xs uppercase font-bold text-[#1b4d2e]">Prey Caught</span>
+          <span id="caught-display" class="text-xl font-extrabold text-[#2e7d32]">0</span>
+        </div>
+        <div class="bg-[#f1f8e9] p-2 rounded-lg border border-[#a5d6a7]">
+          <span class="block text-xs uppercase font-bold text-[#1b4d2e]">Timer</span>
+          <span id="timer-display" class="text-xl font-extrabold text-[#2e7d32]">⏱️ 60s</span>
+        </div>
+      </div>
+
+      <!-- Canvas Box -->
+      <div class="relative w-full aspect-[4/3] bg-[#ded] rounded-lg overflow-hidden border-2 border-[#81c784] shadow-inner mb-4">
+        <canvas id="gameCanvas" class="w-full h-full block bg-[#d7eac2]"></canvas>
+
+        <!-- Start Overlay -->
+        <div id="start-overlay" class="absolute inset-0 bg-[#1b4d2e]/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center text-white z-10">
+          <h2 class="text-3xl font-bold mb-2">60-Second Blitz Hunt!</h2>
+          <p class="text-sm max-w-md mb-6 text-[#e8f5e9]">
+            Catch as many prey animals as possible before the 60-second timer runs out!<br>
+            <strong>🐇 Rabbit:</strong> 10 pts | <strong>🦌 Deer:</strong> 25 pts | <strong>🦬 Bison:</strong> 50 pts
+          </p>
+          <button id="start-btn" onclick="startGame()" class="btn-green px-6 py-3 rounded-lg text-lg font-bold shadow-lg">
+            🐾 Begin Hunt
+          </button>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div id="gameover-overlay" class="hidden absolute inset-0 bg-[#1b4d2e]/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center text-white z-10">
+          <h2 class="text-3xl font-bold mb-1 text-amber-300">⏱️ Time's Up!</h2>
+          <p class="text-sm mb-4 text-[#e8f5e9]">The 60-second hunt has concluded. Here are your stats:</p>
+          <div class="bg-[#2e4d32] p-4 rounded-lg mb-6 border border-[#81c784] text-left w-64">
+            <p>Final Score: <strong id="final-score" class="text-yellow-300">0</strong></p>
+            <p>Prey Caught: <strong id="final-caught" class="text-yellow-300">0</strong></p>
+            <p>High Score: <strong id="final-highscore" class="text-yellow-300">0</strong></p>
+          </div>
+          <button onclick="startGame()" class="btn-green px-6 py-3 rounded-lg text-lg font-bold shadow-lg">
+            Play Again 🐾
+          </button>
+        </div>
+      </div>
+
+      <!-- Game Action Controls -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex gap-2">
+          <button id="pause-btn" onclick="togglePause()" class="btn-green px-4 py-2 rounded-md text-sm font-bold">
+            ⏸️ Pause
+          </button>
+          <button id="sound-btn" onclick="toggleSound()" class="bg-[#81c784] text-[#1b4d2e] px-4 py-2 rounded-md text-sm font-bold hover:bg-[#a5d6a7]">
+            🔊 Sound: ON
+          </button>
+        </div>
+        <div class="text-xs text-[#2e4d32] font-semibold">
+          Controls: WASD / Arrows / On-screen Pad
+        </div>
+      </div>
+
+      <!-- Touch Control D-Pad for Mobile -->
+      <div class="mt-6 pt-4 border-t border-[#c8e6c9] flex justify-center sm:hidden">
+        <div class="grid grid-cols-3 gap-2 w-48 text-center">
+          <div></div>
+          <button onmousedown="handleTouchDir('up')" onmouseup="stopTouchDir()" ontouchstart="handleTouchDir('up')" ontouchend="stopTouchDir()" class="bg-[#2e7d32] text-white p-3 rounded-lg text-xl font-bold active:bg-[#1b5e20]">▲</button>
+          <div></div>
+          <button onmousedown="handleTouchDir('left')" onmouseup="stopTouchDir()" ontouchstart="handleTouchDir('left')" ontouchend="stopTouchDir()" class="bg-[#2e7d32] text-white p-3 rounded-lg text-xl font-bold active:bg-[#1b5e20]">◄</button>
+          <button onmousedown="handleTouchDir('down')" onmouseup="stopTouchDir()" ontouchstart="handleTouchDir('down')" ontouchend="stopTouchDir()" class="bg-[#2e7d32] text-white p-3 rounded-lg text-xl font-bold active:bg-[#1b5e20]">▼</button>
+          <button onmousedown="handleTouchDir('right')" onmouseup="stopTouchDir()" ontouchstart="handleTouchDir('right')" ontouchend="stopTouchDir()" class="bg-[#2e7d32] text-white p-3 rounded-lg text-xl font-bold active:bg-[#1b5e20]">►</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Canvas Setup ---
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // --- Audio System via Tone.js / WebAudio Fallback ---
+    let soundEnabled = true;
+    let synth = null;
+
+    function initAudio() {
+      if (!synth && typeof Tone !== 'undefined') {
+        synth = new Tone.PolySynth(Tone.Synth).toDestination();
+        synth.volume.value = -12;
+      }
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      initAudio();
+      try {
+        if (synth && Tone.context.state === 'running') {
+          if (type === 'catch-rabbit') {
+            synth.triggerAttackRelease(["E5", "G5"], "8n");
+          } else if (type === 'catch-deer') {
+            synth.triggerAttackRelease(["C5", "E5", "G5"], "8n");
+          } else if (type === 'catch-bison') {
+            synth.triggerAttackRelease(["G4", "C5", "E5", "G5"], "8n");
+          } else if (type === 'tick') {
+            synth.triggerAttackRelease(["C6"], "16n");
+          } else if (type === 'start') {
+            synth.triggerAttackRelease(["G3", "C4", "E4"], "4n");
+          } else if (type === 'gameover') {
+            synth.triggerAttackRelease(["E3", "C3", "A2"], "2n");
+          }
+        }
+      } catch (e) {
+        // Fallback or silent catch
+      }
+    }
+
+    // --- Game State Variables ---
+    let gameActive = false;
+    let isPaused = false;
+    let score = 0;
+    let caughtCount = 0;
+    let timeLeft = 60;
+    let timerInterval = null;
+    let highScore = localStorage.getItem('wolfGame_highScore') || 0;
+    document.getElementById('high-score-display').textContent = highScore;
+
+    let keys = { ArrowUp: false, ArrowDown: false, ArrowLeft: false, ArrowRight: false, w: false, a: false, s: false, d: false };
+    let touchDir = null;
+
+    // --- Player Wolf Object ---
+    const wolf = {
+      x: 100,
+      y: 100,
+      radius: 18,
+      speed: 4.2,
+      vx: 0,
+      vy: 0,
+      angle: 0
+    };
+
+    // --- Prey Objects Array ---
+    let preyList = [];
+    let particles = [];
+
+    function spawnPrey() {
+      if (preyList.length >= 7) return;
+      const rand = Math.random();
+      let type = 'rabbit';
+      let radius = 10;
+      let speed = 2.0;
+      let points = 10;
+
+      if (rand < 0.2) { // 20% Bison
+        type = 'bison';
+        radius = 22;
+        speed = 1.0;
+        points = 50;
+      } else if (rand < 0.5) { // 30% Deer
+        type = 'deer';
+        radius = 16;
+        speed = 1.5;
+        points = 25;
+      }
+
+      preyList.push({
+        x: Math.random() * (canvas.width - 60) + 30,
+        y: Math.random() * (canvas.height - 60) + 30,
+        type: type,
+        radius: radius,
+        speed: speed,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        points: points,
+        changeTimer: 0
+      });
+    }
+
+    // --- Keyboard Event Listeners ---
+    window.addEventListener('keydown', (e) => {
+      if (keys.hasOwnProperty(e.key) || ['w','a','s','d','W','A','S','D'].includes(e.key)) {
+        keys[e.key.length === 1 ? e.key.toLowerCase() : e.key] = true;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (keys.hasOwnProperty(e.key) || ['w','a','s','d','W','A','S','D'].includes(e.key)) {
+        keys[e.key.length === 1 ? e.key.toLowerCase() : e.key] = false;
+      }
+    });
+
+    function handleTouchDir(dir) {
+      touchDir = dir;
+    }
+    function stopTouchDir() {
+      touchDir = null;
+    }
+
+    // --- Particle Animation System ---
+    function createBurst(x, y, color) {
+      for (let i = 0; i < 10; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: (Math.random() - 0.5) * 4,
+          vy: (Math.random() - 0.5) * 4,
+          radius: Math.random() * 3 + 2,
+          color: color,
+          life: 20
+        });
+      }
+    }
+
+    // --- Game Logic Updates ---
+    function update() {
+      if (!gameActive || isPaused) return;
+
+      // 1. Calculate Wolf Movement
+      wolf.vx = 0;
+      wolf.vy = 0;
+
+      if (keys.ArrowUp || keys.w || touchDir === 'up') wolf.vy = -wolf.speed;
+      if (keys.ArrowDown || keys.s || touchDir === 'down') wolf.vy = wolf.speed;
+      if (keys.ArrowLeft || keys.a || touchDir === 'left') wolf.vx = -wolf.speed;
+      if (keys.ArrowRight || keys.d || touchDir === 'right') wolf.vx = wolf.speed;
+
+      // Normalize diagonal speed
+      if (wolf.vx !== 0 && wolf.vy !== 0) {
+        wolf.vx *= 0.7071;
+        wolf.vy *= 0.7071;
+      }
+
+      wolf.x += wolf.vx;
+      wolf.y += wolf.vy;
+
+      if (wolf.vx !== 0 || wolf.vy !== 0) {
+        wolf.angle = Math.atan2(wolf.vy, wolf.vx);
+      }
+
+      // Keep inside boundary
+      wolf.x = Math.max(wolf.radius, Math.min(canvas.width - wolf.radius, wolf.x));
+      wolf.y = Math.max(wolf.radius, Math.min(canvas.height - wolf.radius, wolf.y));
+
+      // 2. Update Prey Movement
+      preyList.forEach((prey) => {
+        prey.changeTimer++;
+        if (prey.changeTimer > 50) {
+          prey.vx = (Math.random() - 0.5) * prey.speed * 2;
+          prey.vy = (Math.random() - 0.5) * prey.speed * 2;
+          prey.changeTimer = 0;
+        }
+
+        prey.x += prey.vx;
+        prey.y += prey.vy;
+
+        // Bounce off bounds
+        if (prey.x < prey.radius || prey.x > canvas.width - prey.radius) prey.vx *= -1;
+        if (prey.y < prey.radius || prey.y > canvas.height - prey.radius) prey.vy *= -1;
+      });
+
+      // 3. Check Collision between Wolf and Prey
+      for (let i = preyList.length - 1; i >= 0; i--) {
+        const p = preyList[i];
+        const dist = Math.hypot(wolf.x - p.x, wolf.y - p.y);
+
+        if (dist < wolf.radius + p.radius) {
+          // Catch Prey!
+          score += p.points;
+          caughtCount++;
+
+          let burstColor = '#ffffff';
+          if (p.type === 'deer') burstColor = '#8d6e63';
+          if (p.type === 'bison') burstColor = '#4e342e';
+
+          createBurst(p.x, p.y, burstColor);
+          playSound(`catch-${p.type}`);
+
+          preyList.splice(i, 1);
+          setTimeout(spawnPrey, 600);
+        }
+      }
+
+      // Periodically spawn new prey if low
+      if (preyList.length < 4 && Math.random() < 0.03) {
+        spawnPrey();
+      }
+
+      // Update Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const pt = particles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.life--;
+        if (pt.life <= 0) particles.splice(i, 1);
+      }
+
+      updateHUD();
+    }
+
+    // --- Drawing System ---
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Decorative Trees
+      ctx.fillStyle = '#b2dfdb';
+      ctx.beginPath();
+      ctx.arc(60, 60, 25, 0, Math.PI * 2);
+      ctx.arc(canvas.width - 80, 100, 30, 0, Math.PI * 2);
+      ctx.arc(150, canvas.height - 70, 35, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw Prey Items
+      preyList.forEach((p) => {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        if (p.type === 'rabbit') {
+          // Rabbit
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = '#f8bbd0';
+          ctx.fillRect(-4, -p.radius - 4, 3, 6);
+          ctx.fillRect(1, -p.radius - 4, 3, 6);
+        } else if (p.type === 'deer') {
+          // Deer
+          ctx.fillStyle = '#8d6e63';
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#5d4037';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(-4, -p.radius);
+          ctx.lineTo(-8, -p.radius - 6);
+          ctx.moveTo(4, -p.radius);
+          ctx.lineTo(8, -p.radius - 6);
+          ctx.stroke();
+        } else if (p.type === 'bison') {
+          // Bison
+          ctx.fillStyle = '#4e342e';
+          ctx.beginPath();
+          ctx.arc(0, 0, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+          // Horns
+          ctx.strokeStyle = '#d7ccc8';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(-10, -10, 8, Math.PI, Math.PI * 1.5);
+          ctx.arc(10, -10, 8, Math.PI * 1.5, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      });
+
+      // Draw Particles
+      particles.forEach((pt) => {
+        ctx.fillStyle = pt.color;
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, pt.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Draw Wolf
+      ctx.save();
+      ctx.translate(wolf.x, wolf.y);
+      ctx.rotate(wolf.angle);
+
+      // Body (Gray Wolf)
+      ctx.fillStyle = '#424242';
+      ctx.beginPath();
+      ctx.arc(0, 0, wolf.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Snout
+      ctx.fillStyle = '#616161';
+      ctx.beginPath();
+      ctx.moveTo(wolf.radius, -6);
+      ctx.lineTo(wolf.radius + 10, 0);
+      ctx.lineTo(wolf.radius, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Ears
+      ctx.fillStyle = '#212121';
+      ctx.beginPath();
+      ctx.moveTo(-2, -wolf.radius);
+      ctx.lineTo(6, -wolf.radius - 6);
+      ctx.lineTo(8, -wolf.radius + 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(-2, wolf.radius);
+      ctx.lineTo(6, wolf.radius + 6);
+      ctx.lineTo(8, wolf.radius - 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    // --- HUD Helper ---
+    function updateHUD() {
+      document.getElementById('score-display').textContent = score;
+      document.getElementById('caught-display').textContent = caughtCount;
+      
+      const timerDisplay = document.getElementById('timer-display');
+      timerDisplay.textContent = `⏱️ ${timeLeft}s`;
+
+      if (timeLeft <= 10) {
+        timerDisplay.className = "text-xl font-extrabold text-red-600 animate-pulse";
+      } else {
+        timerDisplay.className = "text-xl font-extrabold text-[#2e7d32]";
+      }
+    }
+
+    // --- Countdown Timer Mechanics ---
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!gameActive || isPaused) return;
+
+        timeLeft--;
+        if (timeLeft <= 10 && timeLeft > 0) {
+          playSound('tick');
+        }
+
+        if (timeLeft <= 0) {
+          timeLeft = 0;
+          clearInterval(timerInterval);
+          gameOver();
+        }
+      }, 1000);
+    }
+
+    // --- Game Control Functions ---
+    function startGame() {
+      if (typeof Tone !== 'undefined') {
+        Tone.start();
+      }
+      playSound('start');
+      score = 0;
+      caughtCount = 0;
+      timeLeft = 60;
+      wolf.x = canvas.width / 2;
+      wolf.y = canvas.height / 2;
+      preyList = [];
+
+      for (let i = 0; i < 5; i++) {
+        spawnPrey();
+      }
+
+      document.getElementById('start-overlay').classList.add('hidden');
+      document.getElementById('gameover-overlay').classList.add('hidden');
+      gameActive = true;
+      isPaused = false;
+
+      startTimer();
+    }
+
+    function togglePause() {
+      if (!gameActive) return;
+      isPaused = !isPaused;
+      document.getElementById('pause-btn').textContent = isPaused ? '▶️ Resume' : '⏸️ Pause';
+    }
+
+    function gameOver() {
+      gameActive = false;
+      clearInterval(timerInterval);
+      playSound('gameover');
+
+      ifument.getElementById('final-highscore').textContent = highScore;
+      document.getElementById('gameover-overlay').classList.remove('hidden');
+    }
+
+    // --- Main Game Animation Loop ---
+    function gameLoop() {
+      update();
+      draw();
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start Animation Loop on Window Load
+    window.onload = function() {
+      resizeCanvas();
+      gameLoop();
+    };
+  </script>
+</body>
+</html> (score > highScore) {
+        highScore = score;
+        localStorage.setItem('wolfGame_highScore', highScore);
+        document.getElementById('high-score-display').textContent = highScore;
+      }
+
+      document.getElementById('final-score').textContent = score;
+      document.getElementById('final-caught').textContent = caughtCount;
+      doc
