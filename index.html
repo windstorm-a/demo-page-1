@@ -62,6 +62,34 @@
     Explore these reputable wildlife and scientific resources to dive deeper into wolf conservation, ecology, and ongoing reintroduction programs across North America and worldwide.
   </p> <!-- Paragraph -->
 
+  <h2>Discover Your Wolf Pack Role</h2>
+  <div class="quiz-card">
+    <p class="quiz-intro">Enter your name and choose your natural style to find out what role you would play in a wild wolf pack!</p>
+    
+    <form id="wolf-quiz-form" onsubmit="calculatePackRole(event)">
+      <div class="form-group">
+        <label for="visitor-name">Your Name or Alias:</label>
+        <input type="text" id="visitor-name" placeholder="e.g., Alex" required>
+      </div>
+
+      <div class="form-group">
+        <label for="preferred-trait">Which trait fits you best?</label>
+        <select id="preferred-trait" required>
+          <option value="" disabled selected>Select a trait...</option>
+          <option value="leader">Strategic, confident, and protective</option>
+          <option value="scout">Curious, energetic, and watchful</option>
+          <option value="mediator">Playful, keeps the peace, friendly</option>
+          <option value="guardian">Patient, loyal, and watchful over others</option>
+        </select>
+      </div>
+
+      <button type="submit" class="website-link">🐾 Find My Pack Role</button>
+    </form>
+
+    <!-- This container starts hidden and shows results after submission -->
+    <div id="quiz-result" class="hidden-content result-box"></div>
+  </div>
+
   <div class="resource-links">
     <a href="https://en.wikipedia.org/wiki/Wolf" target="_blank" rel="noopener noreferrer" class="website-link">
       📖 Wikipedia: Gray Wolf
