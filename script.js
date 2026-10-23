@@ -29,20 +29,19 @@ function toggleBehaviors() {
   }
 }
 
-// Function to handle user input from the Pack Role form
-function calculatePackRole(event) {
-  // Prevent page refresh on form submit
-  event.preventDefault();
-
-  // 1. Capture values entered by the user
+function calculatePackRole() {
   const nameInput = document.getElementById("visitor-name").value.trim();
   const traitInput = document.getElementById("preferred-trait").value;
   const resultDiv = document.getElementById("quiz-result");
 
+  if (!nameInput || !traitInput) {
+    alert("Please enter your name and select a trait!");
+    return;
+  }
+
   let roleTitle = "";
   let roleDescription = "";
 
-  // 2. Process input with conditional logic
   switch (traitInput) {
     case "leader":
       roleTitle = "The Lead / Alpha Wolf";
@@ -65,26 +64,11 @@ function calculatePackRole(event) {
       roleDescription = "You bring essential strength and cooperation to the community.";
   }
 
-  // 3. Display customized output back to the user on the webpage
   resultDiv.innerHTML = `
     <h3>🐾 Welcome to the Pack, ${escapeHTML(nameInput)}!</h3>
     <p><strong>Your Pack Designation:</strong> ${roleTitle}</p>
     <p>${roleDescription}</p>
   `;
 
-  // Reveal the hidden result container
   resultDiv.classList.remove("hidden-content");
-}
-
-// Helper function to safely display user text inputs
-function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
-    tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag)
-  );
 }
