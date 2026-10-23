@@ -1,14 +1,12 @@
-// Array containing a list of wolf facts
 const wolfFacts = [
   "🐾 Wolf Fact: Wolves can travel up to 30 miles in a single day while searching for food!",
-  "🐺 Wolf Fact: A wolf's howl can be heard up to 10 miles away in open territory!",
-  "🐾 Wolf Fact: Wolves eat about 20 pounds of meat in a single feeding when hungry.",
-  "🌲 Wolf Fact: Wolf pups are born blind and deaf, weighing only about one pound!",
-  "🐾 Wolf Fact: A wolf pack usually consists of 4 to 9 members led by an alpha pair.",
-  "🍃 Wolf Fact: Wolves have about 200 million scent cells—humans only have 5 million!"
+  "🐺 Wolf Fact: A wolf's howl can be heard up to 10 miles away in open, unobstructed terrain!",
+  "🐾 Wolf Fact: Wolves can consume up to 20 pounds of meat in a single feeding after a successful hunt.",
+  "🌲 Wolf Fact: Wolf pups are born blind and deaf, weighing only about one pound at birth!",
+  "🐾 Wolf Fact: Wolf packs generally consist of 4 to 9 members, structured around breeding pairs and their offspring.",
+  "🍃 Wolf Fact: Wolves possess over 200 million olfactory scent cells—compared to roughly 5 million in human noses!"
 ];
 
-// Variable to keep track of which fact to show next
 let currentFactIndex = 0;
 
 function showWolfFact() {
@@ -20,14 +18,13 @@ function toggleBehaviors() {
   const content = document.getElementById("behaviors-list");
   const button = document.getElementById("toggle-btn");
 
-  // Check if the container currently has the hidden-content class
   if (content.classList.contains("hidden-content")) {
-    // Show the list and update button text
     content.classList.remove("hidden-content");
     button.textContent = "🐾 Hide Wolf Behaviors List";
+    button.setAttribute("aria-expanded", "true");
   } else {
-    // Hide the list and update button text
     content.classList.add("hidden-content");
     button.textContent = "🐾 Show Wolf Behaviors List";
+    button.setAttribute("aria-expanded", "false");
   }
 }
